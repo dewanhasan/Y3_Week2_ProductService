@@ -1,5 +1,7 @@
 package ie.atu.week2.productservice;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,7 +10,11 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    private List<ProductDetails> productDetailsList = new ArrayList<>();
+    private ProductService productService;
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService =productService;
+    }
 
     @GetMapping("hello")
     public String message(){
@@ -27,15 +33,30 @@ public class ProductController {
     @GetMapping("/product")
     public List<ProductDetails> getProductDetailsList()
     {
-        return productDetailsList;
+        return productService.getProductDetailsList();
     }
 
 
 
     @PostMapping("/product")
-    public ProductDetails addProduct(@RequestBody ProductDetails productDetails)
+    public ProductDetails addProduct(@Valid @RequestBody ProductDetails productDetails)
     {
-        productDetailsList.add(productDetails);
-        return productDetails;
+        return productService.addProduct(productDetails);
     }
+
+    @PutMapping("/product/update/{id}")
+    public ProductDetails updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDetails updatedProduct)
+    {
+        return productService.updateProduct(id, updatedProduct);
+    }
+
+    @PostMapping("/product/delete")
+    public ProductDetails deleteProduct(@Valid @RequestBody ProductDetails productDetails)
+    {
+        return productService.deleteProduct(productDetails);
+
+    }
+
+
+
 }

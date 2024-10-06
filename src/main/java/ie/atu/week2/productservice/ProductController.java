@@ -10,10 +10,12 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
+    private InventoryServiceClient inventoryServiceClient;
     @Autowired
-    public ProductController(ProductService productService) {
-        this.productService =productService;
+    public ProductController(ProductService productService, InventoryServiceClient inventoryServiceClient) {
+        this.productService = productService;
+        this.inventoryServiceClient = inventoryServiceClient;
     }
 
     @GetMapping("hello")
@@ -55,6 +57,13 @@ public class ProductController {
     {
         return productService.deleteProduct(productDetails);
 
+    }
+
+    @PostMapping("/product-and-inventory")
+    public String productAndInventory(@RequestBody ProductDetails productDetails){
+        String product = inventoryServiceClient.somedetails(productDetails);
+        String response = product + "" + productService.addProduct(productDetails);
+        return response;
     }
 
 

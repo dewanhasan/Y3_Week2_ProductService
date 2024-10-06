@@ -15,6 +15,7 @@ public class ProductDetails {
 
     @NotBlank(message = "name cannot null")
     private String name;
+
     @Positive(message = "price must be positive")
     private double price;
 

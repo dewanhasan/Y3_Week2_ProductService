@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  product-service:
+    image: product_app:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - my_network
+
+  inventory-service:
+    image: inventory_app:latest
+    ports:
+      - "8082:8082"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
